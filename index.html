@@ -21,6 +21,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -31,6 +32,12 @@
                             600: '#0284c7',
                             700: '#0369a1',
                             900: '#082f49',
+                        },
+                        'coral': {
+                            400: '#ff7a59',
+                            500: '#ff6b4a',
+                            600: '#ff5733',
+                            700: '#e64a2e',
                         }
                     },
                     fontFamily: {
@@ -66,57 +73,76 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-slate-100 text-slate-800 font-sans overflow-x-hidden">
+<body class="dark bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-sans overflow-x-hidden relative">
+    <!-- Animated Background -->
+    <div id="particles-bg" class="fixed inset-0 z-0 pointer-events-none opacity-30"></div>
+    
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-coral-500 to-ocean-500 z-50 transition-all duration-300" style="width: 0%"></div>
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-ocean-600 hover:text-ocean-700 transition-colors">
-                IH <!-- Change to your initials -->
+    <nav class="fixed top-0 w-full bg-slate-900/90 backdrop-blur-md z-50 border-b border-slate-700">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center relative">
+            <a href="#home" class="text-2xl font-bold bg-gradient-to-r from-coral-500 to-ocean-500 bg-clip-text text-transparent hover:from-coral-400 hover:to-ocean-400 transition-all">
+                IH
             </a>
-            <ul class="hidden md:flex gap-8">
-                <li><a href="#home" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">Home</a></li>
-                <li><a href="#about" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">About</a></li>
-                <li><a href="#projects" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">Projects</a></li>
-                <li><a href="#contact" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">Contact</a></li>
+            <ul class="hidden md:flex gap-8 items-center">
+                <li><a href="#home" class="text-slate-300 hover:text-coral-500 transition-colors font-medium">Home</a></li>
+                <li><a href="#about" class="text-slate-300 hover:text-coral-500 transition-colors font-medium">About</a></li>
+                <li><a href="#projects" class="text-slate-300 hover:text-coral-500 transition-colors font-medium">Projects</a></li>
+                <li><a href="#contact" class="text-slate-300 hover:text-coral-500 transition-colors font-medium">Contact</a></li>
+                <li>
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all">
+                        <i class="fas fa-sun text-coral-500 text-xl"></i>
+                    </button>
+                </li>
             </ul>
             <!-- Mobile Menu Toggle -->
-            <button id="menu-toggle" class="md:hidden text-ocean-600 text-2xl">
+            <button id="menu-toggle" class="md:hidden text-coral-500 text-2xl">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-200">
-            <ul class="flex flex-col gap-4 p-6">
-                <li><a href="#home" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">Home</a></li>
-                <li><a href="#about" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">About</a></li>
-                <li><a href="#projects" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">Projects</a></li>
-                <li><a href="#contact" class="text-slate-700 hover:text-ocean-600 transition-colors font-medium">Contact</a></li>
+        <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-slate-900 border-l border-slate-700 transform translate-x-full transition-transform duration-300 md:hidden">
+            <button id="menu-close" class="absolute top-6 right-6 text-slate-300 text-2xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul class="flex flex-col gap-6 p-8 mt-16">
+                <li><a href="#home" class="text-slate-300 hover:text-coral-500 transition-colors font-medium text-lg mobile-link">Home</a></li>
+                <li><a href="#about" class="text-slate-300 hover:text-coral-500 transition-colors font-medium text-lg mobile-link">About</a></li>
+                <li><a href="#projects" class="text-slate-300 hover:text-coral-500 transition-colors font-medium text-lg mobile-link">Projects</a></li>
+                <li><a href="#contact" class="text-slate-300 hover:text-coral-500 transition-colors font-medium text-lg mobile-link">Contact</a></li>
+                <li class="mt-4">
+                    <button id="theme-toggle-mobile" class="w-full p-3 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all text-left">
+                        <i class="fas fa-sun text-coral-500 mr-2"></i>
+                        <span class="text-slate-300">Toggle Theme</span>
+                    </button>
+                </li>
             </ul>
         </div>
     </nav>
 
     <!-- ===== HOME SECTION ===== -->
-    <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20">
+    <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20 relative z-10">
         <div class="text-center max-w-3xl mx-auto fade-in-element">
-            <h1 class="text-6xl md:text-7xl font-bold text-slate-900 mb-6 leading-tight">
-                Hi, I'm <span class="text-ocean-600">Ihsan Hadhrami</span>
+            <h1 class="text-6xl md:text-7xl font-bold text-slate-100 mb-6 leading-tight">
+                Hi, I'm <span class="bg-gradient-to-r from-coral-500 to-ocean-500 bg-clip-text text-transparent">Ihsan Hadhrami</span>
             </h1>
-            <p class="text-xl md:text-2xl text-slate-600 mb-8 leading-relaxed">
+            <p class="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
                 Python developer specializing in automation and workflow optimization. I build efficient solutions that streamline processes and solve complex problems.
             </p>
             <div class="flex gap-4 justify-center mb-12">
-                <a href="#projects" class="bg-ocean-600 text-white px-8 py-3 rounded-lg hover:bg-ocean-700 transition-all transform hover:scale-105 font-medium">
+                <a href="#projects" class="bg-gradient-to-r from-coral-500 to-coral-600 text-white px-8 py-3 rounded-lg hover:from-coral-600 hover:to-coral-700 transition-all transform hover:scale-105 font-medium shadow-lg shadow-coral-500/30">
                     View My Work
                 </a>
-                <a href="#contact" class="border-2 border-ocean-600 text-ocean-600 px-8 py-3 rounded-lg hover:bg-ocean-50 transition-colors font-medium">
+                <a href="#contact" class="border-2 border-coral-500 text-coral-500 px-8 py-3 rounded-lg hover:bg-coral-500/10 transition-all font-medium">
                     Get In Touch
                 </a>
             </div>
             
             <!-- Scroll Down Animation -->
             <div class="flex justify-center mt-16 animate-bounce">
-                <svg class="w-6 h-6 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-coral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                 </svg>
             </div>
@@ -124,43 +150,113 @@
     </section>
 
     <!-- ===== ABOUT SECTION ===== -->
-    <section id="about" class="py-20 px-6 bg-white">
+    <section id="about" class="py-20 px-6 bg-slate-800/50 backdrop-blur-sm relative z-10">
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-12 text-center fade-in-element">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4 text-center fade-in-element">
                 About Me
             </h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-coral-500 to-ocean-500 mx-auto mb-12 rounded-full"></div>
+            
+            <!-- Statistics Counter -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 fade-in-element">
+                <div class="text-center p-6 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-coral-500 transition-all">
+                    <div class="text-4xl font-bold text-coral-500 mb-2">
+                        <span class="counter" data-target="50">0</span>+
+                    </div>
+                    <p class="text-slate-400">Hours Saved</p>
+                </div>
+                <div class="text-center p-6 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-coral-500 transition-all">
+                    <div class="text-4xl font-bold text-coral-500 mb-2">
+                        <span class="counter" data-target="15">0</span>+
+                    </div>
+                    <p class="text-slate-400">Projects</p>
+                </div>
+                <div class="text-center p-6 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-coral-500 transition-all">
+                    <div class="text-4xl font-bold text-coral-500 mb-2">
+                        <span class="counter" data-target="3">0</span>+
+                    </div>
+                    <p class="text-slate-400">Years Experience</p>
+                </div>
+                <div class="text-center p-6 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-coral-500 transition-all">
+                    <div class="text-4xl font-bold text-coral-500 mb-2">
+                        <span class="counter" data-target="100">0</span>%
+                    </div>
+                    <p class="text-slate-400">Automation</p>
+                </div>
+            </div>
             
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <!-- About Text -->
                 <div class="fade-in-element">
-                    <p class="text-lg text-slate-600 mb-6 leading-relaxed">
+                    <p class="text-lg text-slate-300 mb-6 leading-relaxed">
                         I'm a Python developer with a passion for automation and workflow optimization. I specialize in building tools that eliminate repetitive tasks, streamline processes, and increase efficiency. My expertise lies in creating robust automation solutions that solve real business problems.
                     </p>
                     
-                    <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+                    <p class="text-lg text-slate-300 mb-8 leading-relaxed">
                         I'm dedicated to writing clean, maintainable code and continuously learning best practices in Python development. When I'm not automating workflows, you'll find me exploring new automation frameworks, contributing to open-source projects, or working on innovative automation solutions.
                     </p>
                     
                     <!-- Skills -->
-                    <div class="text-center">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Skills & Technologies</h3>
-                        <div class="flex flex-wrap gap-3 justify-center">
-                            <!-- Customize these skill tags -->
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">Python</span>
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">Automation</span>
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">Workflow Optimization</span>
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">Web Scraping</span>
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">API Development</span>
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">Selenium</span>
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">Data Processing</span>
-                            <span class="bg-ocean-50 text-ocean-700 px-4 py-2 rounded-full text-sm font-medium">Task Scheduling</span>
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold text-slate-100 mb-6">Skills & Expertise</h3>
+                        <div class="space-y-4">
+                            <!-- Python Skill -->
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-slate-300 font-medium">Python</span>
+                                    <span class="text-coral-500 font-semibold">90%</span>
+                                </div>
+                                <div class="h-3 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-coral-500 to-ocean-500 rounded-full skill-bar" data-width="90" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <!-- Automation Skill -->
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-slate-300 font-medium">Automation & RPA</span>
+                                    <span class="text-coral-500 font-semibold">85%</span>
+                                </div>
+                                <div class="h-3 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-coral-500 to-ocean-500 rounded-full skill-bar" data-width="85" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <!-- Web Scraping Skill -->
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-slate-300 font-medium">Web Scraping & APIs</span>
+                                    <span class="text-coral-500 font-semibold">80%</span>
+                                </div>
+                                <div class="h-3 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-coral-500 to-ocean-500 rounded-full skill-bar" data-width="80" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <!-- Data Processing Skill -->
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-slate-300 font-medium">Data Processing</span>
+                                    <span class="text-coral-500 font-semibold">75%</span>
+                                </div>
+                                <div class="h-3 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-coral-500 to-ocean-500 rounded-full skill-bar" data-width="75" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <!-- Selenium Skill -->
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-slate-300 font-medium">Selenium & Testing</span>
+                                    <span class="text-coral-500 font-semibold">70%</span>
+                                </div>
+                                <div class="h-3 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-coral-500 to-ocean-500 rounded-full skill-bar" data-width="70" style="width: 0%"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- About Image -->
                 <div class="fade-in-element">
-                    <div class="aspect-square bg-gradient-to-br from-ocean-200 to-ocean-400 rounded-2xl flex items-center justify-center overflow-hidden">
+                    <div class="aspect-square bg-gradient-to-br from-coral-500/20 to-ocean-500/20 rounded-2xl flex items-center justify-center overflow-hidden border-4 border-slate-700 hover:border-coral-500 transition-all">
                         <img src="assets/images/profile.jpg" alt="Ihsan Hadhrami Profile" class="w-full h-full object-cover rounded-2xl">
                     </div>
                 </div>
@@ -170,31 +266,32 @@
     
 
     <!-- ===== CERTIFICATIONS SECTION ===== -->
-    <section id="certifications" class="py-20 px-6 bg-white">
+    <section id="certifications" class="py-20 px-6 bg-slate-900 relative z-10">
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-12 text-center fade-in-element">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4 text-center fade-in-element">
                 Certifications
             </h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-coral-500 to-ocean-500 mx-auto mb-12 rounded-full"></div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Certification Card 1 -->
-                <div class="bg-gradient-to-br from-ocean-50 to-ocean-100 p-8 rounded-xl text-center hover:shadow-lg transition-all transform hover:scale-105 fade-in-element">
-                    <div class="text-5xl mb-4 text-ocean-600">
+                <div class="bg-slate-800 border border-slate-700 p-8 rounded-xl text-center hover:shadow-lg hover:shadow-coral-500/20 hover:border-coral-500 transition-all transform hover:scale-105 fade-in-element">
+                    <div class="text-5xl mb-4 text-coral-500">
                         <i class="fas fa-certificate"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">Automate Your Life With Python + ChatGPT Prize</h3>
-                    <p class="text-slate-600 text-sm mb-3">Udemy</p>
-                    <p class="text-xs text-slate-500">In Progress</p>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Automate Your Life With Python + ChatGPT Prize</h3>
+                    <p class="text-slate-400 text-sm mb-3">Udemy</p>
+                    <p class="text-xs text-coral-500 font-semibold">In Progress</p>
                 </div>
                 
                 <!-- Certification Card 2 -->
-                <div class="bg-gradient-to-br from-ocean-50 to-ocean-100 p-8 rounded-xl text-center hover:shadow-lg transition-all transform hover:scale-105 fade-in-element">
-                    <div class="text-5xl mb-4 text-ocean-600">
+                <div class="bg-slate-800 border border-slate-700 p-8 rounded-xl text-center hover:shadow-lg hover:shadow-coral-500/20 hover:border-coral-500 transition-all transform hover:scale-105 fade-in-element">
+                    <div class="text-5xl mb-4 text-coral-500">
                         <i class="fas fa-certificate"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">The Complete Python Programming Course – From Beginner to Pro</h3>
-                    <p class="text-slate-600 text-sm mb-3">Code with Mosh</p>
-                    <p class="text-xs text-slate-500">Planned</p>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">The Complete Python Programming Course – From Beginner to Pro</h3>
+                    <p class="text-slate-400 text-sm mb-3">Code with Mosh</p>
+                    <p class="text-xs text-coral-500 font-semibold">Planned</p>
                 </div>
                 
                 <!-- Certification Card 2 ends above -->
@@ -203,34 +300,40 @@
     </section>
 
     <!-- ===== PROJECTS SECTION ===== -->
-    <section id="projects" class="py-20 px-6 bg-gradient-to-br from-slate-50 to-slate-100">
+    <section id="projects" class="py-20 px-6 bg-slate-800/50 backdrop-blur-sm relative z-10">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-12 text-center fade-in-element">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4 text-center fade-in-element">
                 Featured Projects
             </h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-coral-500 to-ocean-500 mx-auto mb-12 rounded-full"></div>
             
             <div class="grid md:grid-cols-2 gap-10">
                 <!-- Project Card 1 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all transform hover:scale-105 fade-in-element group">
-                    <div class="aspect-video bg-gradient-to-br from-ocean-300 to-ocean-600 flex items-center justify-center overflow-hidden relative">
-                        <i class="fas fa-code text-white text-6xl opacity-30"></i>
-                        <!-- Replace with actual project image -->
+                <div class="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-coral-500/20 hover:border-coral-500 transition-all transform hover:scale-105 fade-in-element group">
+                    <div class="aspect-video bg-gradient-to-br from-coral-600 to-ocean-600 flex items-center justify-center overflow-hidden relative">
+                        <i class="fas fa-code text-white text-6xl opacity-50 group-hover:scale-110 transition-transform"></i>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-white font-bold text-sm">View Details →</span>
+                        </div>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Web Scraping & Data Pipeline</h3>
-                        <p class="text-slate-600 mb-6 leading-relaxed">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-2xl font-bold text-slate-100">Web Scraping & Data Pipeline</h3>
+                            <span class="text-xs bg-coral-500/20 text-coral-500 px-3 py-1 rounded-full font-semibold">Active</span>
+                        </div>
+                        <p class="text-slate-400 mb-6 leading-relaxed">
                             An automated data collection and processing pipeline that scrapes web data, transforms it, and loads it into databases. Handles scheduling, error recovery, and data validation at scale.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Python</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">BeautifulSoup</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Selenium</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Python</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">BeautifulSoup</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Selenium</span>
                         </div>
                         <div class="flex gap-4">
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fab fa-github"></i> GitHub
                             </a>
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fas fa-external-link-alt"></i> Live Demo
                             </a>
                         </div>
@@ -238,26 +341,31 @@
                 </div>
                 
                 <!-- Project Card 2 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all transform hover:scale-105 fade-in-element group">
-                    <div class="aspect-video bg-gradient-to-br from-ocean-300 to-ocean-600 flex items-center justify-center overflow-hidden relative">
-                        <i class="fas fa-tasks text-white text-6xl opacity-30"></i>
-                        <!-- Replace with actual project image -->
+                <div class="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-coral-500/20 hover:border-coral-500 transition-all transform hover:scale-105 fade-in-element group">
+                    <div class="aspect-video bg-gradient-to-br from-ocean-600 to-coral-600 flex items-center justify-center overflow-hidden relative">
+                        <i class="fas fa-tasks text-white text-6xl opacity-50 group-hover:scale-110 transition-transform"></i>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-white font-bold text-sm">View Details →</span>
+                        </div>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Business Process Automation</h3>
-                        <p class="text-slate-600 mb-6 leading-relaxed">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-2xl font-bold text-slate-100">Business Process Automation</h3>
+                            <span class="text-xs bg-ocean-500/20 text-ocean-500 px-3 py-1 rounded-full font-semibold">Live</span>
+                        </div>
+                        <p class="text-slate-400 mb-6 leading-relaxed">
                             A comprehensive workflow automation system that streamlines repetitive business processes. Automates document processing, email workflows, and report generation, saving 40+ hours monthly.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Python</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Schedule</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">API</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Python</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Schedule</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">API</span>
                         </div>
                         <div class="flex gap-4">
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fab fa-github"></i> GitHub
                             </a>
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fas fa-external-link-alt"></i> Live Demo
                             </a>
                         </div>
@@ -265,26 +373,31 @@
                 </div>
                 
                 <!-- Project Card 3 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all transform hover:scale-105 fade-in-element group">
-                    <div class="aspect-video bg-gradient-to-br from-ocean-300 to-ocean-600 flex items-center justify-center overflow-hidden relative">
-                        <i class="fas fa-robot text-white text-6xl opacity-30"></i>
-                        <!-- Replace with actual project image -->
+                <div class="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-coral-500/20 hover:border-coral-500 transition-all transform hover:scale-105 fade-in-element group">
+                    <div class="aspect-video bg-gradient-to-br from-coral-600 to-ocean-600 flex items-center justify-center overflow-hidden relative">
+                        <i class="fas fa-robot text-white text-6xl opacity-50 group-hover:scale-110 transition-transform"></i>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-white font-bold text-sm">View Details →</span>
+                        </div>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Automated Report Generator</h3>
-                        <p class="text-slate-600 mb-6 leading-relaxed">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-2xl font-bold text-slate-100">Automated Report Generator</h3>
+                            <span class="text-xs bg-coral-500/20 text-coral-500 px-3 py-1 rounded-full font-semibold">Active</span>
+                        </div>
+                        <p class="text-slate-400 mb-6 leading-relaxed">
                             An intelligent report generation system that pulls data from multiple sources, generates formatted reports, and distributes them via email. Supports scheduling and template customization for different departments.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Python</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Jinja2</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Pandas</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Python</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Jinja2</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Pandas</span>
                         </div>
                         <div class="flex gap-4">
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fab fa-github"></i> GitHub
                             </a>
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fas fa-external-link-alt"></i> Live Demo
                             </a>
                         </div>
@@ -292,26 +405,31 @@
                 </div>
                 
                 <!-- Project Card 4 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all transform hover:scale-105 fade-in-element group">
-                    <div class="aspect-video bg-gradient-to-br from-ocean-300 to-ocean-600 flex items-center justify-center overflow-hidden relative">
-                        <i class="fas fa-chart-bar text-white text-6xl opacity-30"></i>
-                        <!-- Replace with actual project image -->
+                <div class="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-coral-500/20 hover:border-coral-500 transition-all transform hover:scale-105 fade-in-element group">
+                    <div class="aspect-video bg-gradient-to-br from-ocean-600 to-coral-600 flex items-center justify-center overflow-hidden relative">
+                        <i class="fas fa-chart-bar text-white text-6xl opacity-50 group-hover:scale-110 transition-transform"></i>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-white font-bold text-sm">View Details →</span>
+                        </div>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-2xl font-bold text-slate-900 mb-2">RPA Solution - Desktop Automation</h3>
-                        <p class="text-slate-600 mb-6 leading-relaxed">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-2xl font-bold text-slate-100">RPA Solution - Desktop Automation</h3>
+                            <span class="text-xs bg-ocean-500/20 text-ocean-500 px-3 py-1 rounded-full font-semibold">Live</span>
+                        </div>
+                        <p class="text-slate-400 mb-6 leading-relaxed">
                             A robotic process automation tool that handles repetitive desktop tasks including data entry, application interaction, and file management. Reduces manual effort by 90% with intelligent error handling.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">Python</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">PyAutoGUI</span>
-                            <span class="text-xs bg-ocean-50 text-ocean-700 px-3 py-1 rounded-full font-medium">OCR</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">Python</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">PyAutoGUI</span>
+                            <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-medium">OCR</span>
                         </div>
                         <div class="flex gap-4">
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fab fa-github"></i> GitHub
                             </a>
-                            <a href="#" class="text-ocean-600 hover:text-ocean-700 font-semibold flex items-center gap-2 transition-colors">
+                            <a href="#" class="text-coral-500 hover:text-coral-400 font-semibold flex items-center gap-2 transition-colors">
                                 <i class="fas fa-external-link-alt"></i> Live Demo
                             </a>
                         </div>
@@ -322,49 +440,50 @@
     </section>
 
     <!-- ===== CONTACT SECTION ===== -->
-    <section id="contact" class="py-20 px-6 bg-white">
+    <section id="contact" class="py-20 px-6 bg-slate-900 relative z-10">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-12 text-center fade-in-element">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4 text-center fade-in-element">
                 Get In Touch
             </h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-coral-500 to-ocean-500 mx-auto mb-12 rounded-full"></div>
             
             <div class="flex justify-center">
                 <!-- Contact Info - Centered -->
                 <div class="fade-in-element text-center max-w-2xl">
-                    <p class="text-lg text-slate-600 mb-12 leading-relaxed">
+                    <p class="text-lg text-slate-300 mb-12 leading-relaxed">
                         I'm always interested in hearing about new projects and opportunities. Feel free to reach out if you'd like to collaborate or just say hi!
                     </p>
                     
                     <div class="flex flex-col md:flex-row justify-center gap-12 md:gap-8">
                         <!-- Email -->
-                        <div class="flex flex-col items-center">
-                            <div class="text-5xl text-ocean-600 mb-3">
+                        <div class="flex flex-col items-center group">
+                            <div class="text-5xl text-coral-500 mb-3 group-hover:scale-110 transition-transform">
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <h3 class="font-bold text-slate-900 mb-2">Email</h3>
-                            <a href="mailto:ihadhrami20@gmail.com" class="text-ocean-600 hover:text-ocean-700 transition-colors">
+                            <h3 class="font-bold text-slate-100 mb-2">Email</h3>
+                            <a href="mailto:ihadhrami20@gmail.com" class="text-slate-300 hover:text-coral-500 transition-colors">
                                 ihadhrami20@gmail.com
                             </a>
                         </div>
                         
                         <!-- LinkedIn -->
-                        <div class="flex flex-col items-center">
-                            <div class="text-5xl text-ocean-600 mb-3">
+                        <div class="flex flex-col items-center group">
+                            <div class="text-5xl text-coral-500 mb-3 group-hover:scale-110 transition-transform">
                                 <i class="fab fa-linkedin"></i>
                             </div>
-                            <h3 class="font-bold text-slate-900 mb-2">LinkedIn</h3>
-                            <a href="https://www.linkedin.com/in/ihsan-hadhrami-ab0368287" target="_blank" class="text-ocean-600 hover:text-ocean-700 transition-colors">
+                            <h3 class="font-bold text-slate-100 mb-2">LinkedIn</h3>
+                            <a href="https://www.linkedin.com/in/ihsan-hadhrami-ab0368287" target="_blank" class="text-slate-300 hover:text-coral-500 transition-colors">
                                 linkedin.com/in/ihsan-hadhrami-ab0368287
                             </a>
                         </div>
                         
                         <!-- GitHub -->
-                        <div class="flex flex-col items-center">
-                            <div class="text-5xl text-ocean-600 mb-3">
+                        <div class="flex flex-col items-center group">
+                            <div class="text-5xl text-coral-500 mb-3 group-hover:scale-110 transition-transform">
                                 <i class="fab fa-github"></i>
                             </div>
-                            <h3 class="font-bold text-slate-900 mb-2">GitHub</h3>
-                            <a href="https://github.com/ihadhrami20-csar" target="_blank" class="text-ocean-600 hover:text-ocean-700 transition-colors">
+                            <h3 class="font-bold text-slate-100 mb-2">GitHub</h3>
+                            <a href="https://github.com/ihadhrami20-csar" target="_blank" class="text-slate-300 hover:text-coral-500 transition-colors">
                                 github.com/ihadhrami20-csar
                             </a>
                         </div>
@@ -375,7 +494,7 @@
     </section>
 
     <!-- ===== FOOTER ===== -->
-    <footer class="bg-slate-900 text-white py-10 px-6">
+    <footer class="bg-slate-950 text-white py-10 px-6 relative z-10">
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <p class="text-slate-400">
@@ -384,13 +503,13 @@
                 
                 <!-- Social Links -->
                 <div class="flex gap-6">
-                    <a href="https://github.com/ihadhrami20-csar" target="_blank" class="text-slate-400 hover:text-ocean-400 transition-colors text-xl">
+                    <a href="https://github.com/ihadhrami20-csar" target="_blank" class="text-slate-400 hover:text-coral-500 transition-colors text-xl">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/ihsan-hadhrami-ab0368287" target="_blank" class="text-slate-400 hover:text-ocean-400 transition-colors text-xl">
+                    <a href="https://www.linkedin.com/in/ihsan-hadhrami-ab0368287" target="_blank" class="text-slate-400 hover:text-coral-500 transition-colors text-xl">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a href="mailto:ihadhrami20@gmail.com" class="text-slate-400 hover:text-ocean-400 transition-colors text-xl">
+                    <a href="mailto:ihadhrami20@gmail.com" class="text-slate-400 hover:text-coral-500 transition-colors text-xl">
                         <i class="fas fa-envelope"></i>
                     </a>
                 </div>
@@ -399,7 +518,7 @@
     </footer>
 
     <!-- Scroll to Top Button -->
-    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-ocean-600 text-white p-4 rounded-full opacity-0 invisible transition-all transform hover:scale-110 hover:bg-ocean-700 shadow-lg" title="Scroll to top">
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-coral-500 to-coral-600 text-white p-4 rounded-full opacity-0 invisible transition-all transform hover:scale-110 shadow-lg shadow-coral-500/50 z-50" title="Scroll to top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
