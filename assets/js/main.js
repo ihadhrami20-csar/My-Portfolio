@@ -89,45 +89,8 @@ window.addEventListener('scroll', () => {
 
 // ===== CONTACT FORM HANDLING =====
 
-const contactForm = document.getElementById('contact-form');
-
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    
-    // Option 1: Use FormSubmit service (free, no backend required)
-    // This sends the form to your email automatically
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('message', message);
-    
-    try {
-        // Using FormSubmit.co endpoint (free alternative to Formspree)
-        const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-            },
-            body: formData
-        });
-        
-        if (response.ok) {
-            // Success message
-            alert('Message sent successfully! I\'ll get back to you soon.');
-            contactForm.reset();
-        } else {
-            alert('There was an error sending your message. Please try again or email me directly.');
-        }
-    } catch (error) {
-        console.error('Form submission error:', error);
-        // Fallback: Open mailto link
-        window.location.href = `mailto:your.email@example.com?subject=Portfolio Contact&body=Name: ${name}%0AEmail: ${email}%0A%0AMessage:%0A${message}`;
-    }
-});
+// Note: Contact form removed - using direct contact methods instead
+// If you want to add a form, create the HTML form element with id="contact-form"
 
 // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
 
