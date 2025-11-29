@@ -244,6 +244,50 @@ if (!document.querySelector('.skip-to-main')) {
 console.log('%c👋 Welcome to my portfolio!', 'font-size: 20px; color: #0284c7; font-weight: bold;');
 console.log('%cFeel free to explore the code and reach out if you have any questions!', 'font-size: 14px; color: #0369a1;');
 
+// ===== CERTIFICATIONS SLIDER - HORIZONTAL SCROLL ON MOUSE WHEEL =====
+
+const certSlider = document.getElementById('cert-slider');
+
+if (certSlider) {
+    // Enable horizontal scrolling with mouse wheel
+    certSlider.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            certSlider.scrollLeft += e.deltaY;
+        }
+    }, { passive: false });
+    
+    // Enable drag to scroll
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    certSlider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        certSlider.style.cursor = 'grabbing';
+        startX = e.pageX - certSlider.offsetLeft;
+        scrollLeft = certSlider.scrollLeft;
+    });
+    
+    certSlider.addEventListener('mouseleave', () => {
+        isDown = false;
+        certSlider.style.cursor = 'grab';
+    });
+    
+    certSlider.addEventListener('mouseup', () => {
+        isDown = false;
+        certSlider.style.cursor = 'grab';
+    });
+    
+    certSlider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - certSlider.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll speed multiplier
+        certSlider.scrollLeft = scrollLeft - walk;
+    });
+}
+
 // ===== OPTIONAL: Service Worker for Offline Support =====
 
 // Uncomment if you want to add PWA functionality
